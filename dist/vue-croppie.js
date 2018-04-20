@@ -1,4 +1,4 @@
-var VueCroppie =
+module.exports =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -110,6 +110,10 @@ var VueCroppie = {
           type: Boolean,
           default: true
         },
+        enableSymetricResize: {
+          type: Boolean,
+          default: false
+        },
         enableZoom: {
           type: Boolean,
           default: true
@@ -162,6 +166,7 @@ var VueCroppie = {
             enableOrientation: this.enableOrientation,
             enableZoom: this.enableZoom,
             enableResize: this.enableResize,
+            enableSymetricResize: this.enableSymetricResize,
             enforceBoundary: this.enforceBoundary,
             mouseWheelZoom: this.mouseWheelZoom,
             viewport: this.viewport,
@@ -748,10 +753,16 @@ exports.default = VueCroppie;
 
             var deltaX = pageX - originalX;
             var deltaY = pageY - originalY;
+
+            if (self.options.enableSymetricResize) {
+                direction === 'h' || (deltaX = deltaY);
+                direction === 'v' || (deltaY = deltaX);
+            }
+
             var newHeight = self.options.viewport.height + deltaY;
             var newWidth = self.options.viewport.width + deltaX;
 
-            if (direction === 'v' && newHeight >= minSize && newHeight <= maxHeight) {
+            if ((self.options.enableSymetricResize || direction === 'v') && newHeight >= minSize && newHeight <= maxHeight) {
                 css(wrap, {
                     height: newHeight + 'px'
                 });
@@ -766,7 +777,7 @@ exports.default = VueCroppie;
                     height: self.options.viewport.height + 'px'
                 });
             }
-            else if (direction === 'h' && newWidth >= minSize && newWidth <= maxWidth) {
+            if ((self.options.enableSymetricResize || direction === 'h') && newWidth >= minSize && newWidth <= maxWidth) {
                 css(wrap, {
                     width: newWidth + 'px'
                 });
@@ -851,8 +862,8 @@ exports.default = VueCroppie;
         function scroll(ev) {
             var delta, targetZoom;
 
-            if(self.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey != true){ 
-              return 0; 
+            if(self.options.mouseWheelZoom === 'ctrl' && ev.ctrlKey != true){
+              return 0;
             } else if (ev.wheelDelta) {
                 delta = ev.wheelDelta / 1200; //wheelDelta min: -120 max: 120 // max x 10 x 2
             } else if (ev.deltaY) {
@@ -1287,7 +1298,7 @@ exports.default = VueCroppie;
 
         zoomer.min = fix(minZoom, 4);
         zoomer.max = fix(maxZoom, 4);
-        
+
         if (!initial && (scale < zoomer.min || scale > zoomer.max)) {
             _setZoomerVal.call(self, scale < zoomer.min ? zoomer.min : zoomer.max);
         }
@@ -1393,7 +1404,7 @@ exports.default = VueCroppie;
 
         width=Math.min(width, self._originalImageWidth);
         height=Math.min(height, self._originalImageHeight)
-    
+
         // console.table({ left, right, top, bottom, canvasWidth, canvasHeight });
         ctx.drawImage(this.elements.preview, left, top, width, height, startX, startY, canvasWidth, canvasHeight);
         if (circle) {
@@ -1752,6 +1763,7 @@ exports.default = VueCroppie;
         showZoomer: true,
         enableZoom: true,
         enableResize: false,
+        enableSymetricResize: false,
         mouseWheelZoom: true,
         enableExif: false,
         enforceBoundary: true,

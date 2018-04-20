@@ -1,6 +1,6 @@
 {
-  "name": "vue-croppie",
-  "version": "1.3.12",
+  "name": "vue-croppie-extended",
+  "version": "1.0.3",
   "description": "VueJs wrapper for Croppie",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jofftiquez/vue-croppie.git"
+    "url": "git+https://github.com/gevorgmargaryan/vue-croppie.git"
   },
-  "author": "jofftiquez@gmail.com",
+  "author": "gevorgmargaryan@yahoo.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jofftiquez/vue-croppie/issues"
+    "url": "https://github.com/gevorgmargaryan/vue-croppie/issues"
   },
-  "homepage": "https://github.com/jofftiquez/vue-croppie#readme",
+  "homepage": "https://github.com/gevorgmargaryan/vue-croppie#readme",
   "dependencies": {
     "croppie": "^2.6.1"
   },
